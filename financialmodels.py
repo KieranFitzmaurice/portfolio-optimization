@@ -158,8 +158,8 @@ def get_risk_free_rate(api_key):
 def get_liquid_us_stocks(proxypool,sleep_seconds=0.25,count=250,failure_limit=5):
 
     """
-    This function returns a list of U.S. stocks with an average daily trading volume
-    of >1M over the past 3 months.
+    This function returns a list of U.S. stocks listed on NYSE or NASDAQ with
+    an average trading volume of >1M and a share price of >$10.
 
     param: proxypool: pool of proxies to route requests through
     param: sleep_seconds: number of seconds to wait in between api queries
@@ -177,14 +177,14 @@ def get_liquid_us_stocks(proxypool,sleep_seconds=0.25,count=250,failure_limit=5)
 
     while numfailures < failure_limit:
 
-        url = f'https://finance.yahoo.com/screener/e6b61b78-a455-437b-bb1a-fa8df5480085?offset={offset}&count={count}'
+        url = f'https://finance.yahoo.com/screener/e571efd8-2e40-41be-8401-0aef2dcd52b3?offset={offset}&count={count}'
 
         headers = {'Accept':'*/*',
                    'Accept-Encoding':'gzip, deflate, br',
                    'Accept-Language':'en-US,en;q=0.9',
                    'Cookie':'tbla_id=2c5e5f61-f1a3-4a53-868c-57c8e1743841-tuct9f6b7ad; gpp=DBAA; gpp_sid=-1; PRF=t%3DAAPL%26newChartbetateaser%3D1; cmp=t=1691869618&j=0&u=1YNN; OTH=v=2&s=2&d=eyJraWQiOiIwMTY0MGY5MDNhMjRlMWMxZjA5N2ViZGEyZDA5YjE5NmM5ZGUzZWQ5IiwiYWxnIjoiUlMyNTYifQ.eyJjdSI6eyJndWlkIjoiQ0NRR1o3S0xNUUREWkFHRUwyTjRZTlZIREkiLCJwZXJzaXN0ZW50Ijp0cnVlLCJzaWQiOiJtQkp0MTN3S0RYb1QifX0.Lf3GtgtuZDrK9qmgYggXKVcl_5rfBO261dG_D6YrW4xn4Gc3MCqFf1kkE07kfkl7l8Cvk07xbynPwiR8N_AQpsgsbykQANvdDN_wf90rr6McRPiufrW6yj_o50-x2EXGVPqF4CtmHr2S6r2ZuCsqL3Bxt-xGULeSNNJl_NchU4o; T=af=JnRzPTE2OTE4Njk3NjQmcHM9YjRmVDltNUM5dmdrTm1BWVV5QzZXUS0t&d=bnMBeWFob28BZwFDQ1FHWjdLTE1RRERaQUdFTDJONFlOVkhESQFhYwFBQ1pWX1pncAFhbAFrZml0em1hdXJpY2U5OEBnbWFpbC5jb20Bc2MBbWJyX3JlZ2lzdHJhdGlvbgFmcwFvNFRPNi5CazEuSkUBenoBRUouMWtCQTdFAWEBUUFFAWxhdAFFSi4xa0IBbnUBMA--&kt=EAAbEObqjwDfI7_sUSBbUDO5w--~I&ku=FAAdKbYpKc3zzaiUddQaerX9Th3r.8nCAOXzF7aBh2NDMnsxJH2sWBIvf3i54y3mGjlh6oIYvDfmHMc1ps5hj1T.W9LDdSXey.ds0ldWxM0914dlCNuZYWUpNyVI_hxQd4cj42tVqlW6KhjwXMS6Ksdpx28xxzkGqr0D.FanYnjgF8-~E; F=d=kpKVk109vITHEQgm9x94ItPi0LxzJRWt10QIvXO2VwvHgv9BS42tuYBEQq8-; PH=l=en-US; Y=v=1&n=42n74e1mjl39f&l=enkfg2bd7gpe4m5dpukav9u5v6ex48cnbenlvdb5/o&p=n32vvvv00000000&r=1c6&intl=us; GUCS=AX6Rr5a_; GUC=AQEACAJk2SxlC0Ii_QTy&s=AQAAAKkI31bo&g=ZNfiUQ; A1=d=AQABBFMa_GICEO97UbGAtOHKcnv7xQ443sUFEgEACAIs2WQLZdxI0iMA_eMBAAcIUxr8Yg443sUID7qsVuLBXOCuEspSPevwugkBBwoB8Q&S=AQAAAhFJEqAJLFuOeTqmaZCSb9o; A3=d=AQABBFMa_GICEO97UbGAtOHKcnv7xQ443sUFEgEACAIs2WQLZdxI0iMA_eMBAAcIUxr8Yg443sUID7qsVuLBXOCuEspSPevwugkBBwoB8Q&S=AQAAAhFJEqAJLFuOeTqmaZCSb9o; A1S=d=AQABBFMa_GICEO97UbGAtOHKcnv7xQ443sUFEgEACAIs2WQLZdxI0iMA_eMBAAcIUxr8Yg443sUID7qsVuLBXOCuEspSPevwugkBBwoB8Q&S=AQAAAhFJEqAJLFuOeTqmaZCSb9o&j=US; gam_id=y-gRZrwmlG2uKRYsH9VXQtLugDfCrHZc2hbIE7nViKwjbQiM7h_w---A; check=true; mbox=PC#4b72921d-446d-3e95-884e-6c2059ad1f36.34_0#1755115090; mboxEdgeCluster=34; AMCVS_6B25357E519160E40A490D44%40AdobeOrg=1; AMCV_6B25357E519160E40A490D44%40AdobeOrg=-1124106680%7CMCIDTS%7C19582%7CMCMID%7C70387708431593500443497709643102152209%7CMCAAMLH-1692475089%7C7%7CMCAAMB-1692475089%7Cj8Odv6LonN4r3an7LhD3WZrU1bUpAkFkkiY1ncBR96t2PTI%7CMCOPTOUT-1691877489s%7CNONE%7CvVersion%7C5.2.0',
                    'Origin':'https://finance.yahoo.com',
-                   'Referer':'https://finance.yahoo.com/screener/e6b61b78-a455-437b-bb1a-fa8df5480085',
+                   'Referer':'https://finance.yahoo.com/screener/e571efd8-2e40-41be-8401-0aef2dcd52b3',
                    'Sec-Ch-Ua':"\"Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"115\", \"Chromium\";v=\"115\"",
                    'Sec-Ch-Ua-Mobile':'?0',
                    'Sec-Ch-Ua-Platform':"Windows",
@@ -290,3 +290,46 @@ def update_stock_data(proxypool,max_days_since_update=7):
     download_stock_data(tickers_to_download,proxypool)
 
     return(None)
+
+def clean_stock_data():
+    """
+    Function to consolidate raw stock data into single dataframe
+    """
+
+    pwd = os.getcwd()
+    date_str = pd.to_datetime('today').strftime('%Y-%m-%d')
+
+    # Get most recent list of liquid U.S. stocks
+    ticker_lists = [x for x in os.listdir(os.path.join(pwd,'data/tickers')) if 'liquid_us_stocks.txt' in x]
+    ticker_lists.sort()
+    latest_list = ticker_lists[-1]
+    ticker_filepath = os.path.join(pwd,f'data/tickers/{latest_list}')
+    ticker_symbols = np.genfromtxt(ticker_filepath,dtype=str)
+
+    raw_dir = os.path.join(pwd,'data/tickers/raw')
+
+    df_list = []
+    n = len(ticker_symbols)
+
+    for i,ticker in enumerate(ticker_symbols):
+        print(f'{i+1} / {n} - {ticker}',flush=True)
+        
+        ticker_filepath = os.path.join(raw_dir,f'{ticker}.csv')
+        if os.path.exists(ticker_filepath):
+            df = pd.read_csv(ticker_filepath)
+            df['Symbol'] = ticker
+            df['Date'] = pd.to_datetime(df['Date'].apply(lambda x: x.split(' ')[0]))
+            df['Price'] = df['Close']
+            df = df.resample('M',on='Date').agg({'Symbol':'last','Price':'last','Volume':'last'}).iloc[:-1,]
+            df = df.reset_index()
+            df['Period'] = df['Date'].dt.to_period('M')
+            df['Monthly Log Return'] = np.concatenate(([np.nan],np.log(df['Price'].values[1:]/df['Price'].values[:-1])))
+            df = df[['Symbol','Period','Date','Price','Volume','Monthly Log Return']]
+
+            df_list.append(df)
+
+    df = pd.concat(df_list).reset_index(drop=True)
+    outname = os.path.join(pwd,f'data/tickers/clean/{date_str}_stock_data_clean.csv')
+    df.to_csv(outname,index=False)
+
+    return(df)
